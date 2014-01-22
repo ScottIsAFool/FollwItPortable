@@ -72,8 +72,11 @@
     <Compile Include="Model\Requests\BaseRequest.cs" />
     <Compile Include="Model\Requests\RequestManager.cs" />
     <Compile Include="Model\Responses\AuthenticationResponse.cs" />
+    <Compile Include="Model\MovieIdentificationType.cs" />
     <Compile Include="PostMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\ShowIdentificationType.cs" />
+    <Compile Include="Model\TimeInterval.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

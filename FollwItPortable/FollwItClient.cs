@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using FollwItPortable.Attributes;
 using FollwItPortable.Extensions;
 using FollwItPortable.Logging;
 using FollwItPortable.Model;
@@ -14,21 +13,50 @@ using FollwItPortable.Model.Responses;
 
 namespace FollwItPortable
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class FollwItClient
     {
         private const string BaseUrlFormat = "http://follw.it/api/3/{0}/{1}/{2}";
         private const string DateFormat = "YYYY-mm-dd";
 
         #region Public Properties
+        
+        /// <summary>
+        /// Gets the HTTP client.
+        /// </summary>
+        /// <value>
+        /// The HTTP client.
+        /// </value>
         public HttpClient HttpClient { get; private set; }
+        
+        /// <summary>
+        /// Gets the API key.
+        /// </summary>
+        /// <value>
+        /// The API key.
+        /// </value>
         public string ApiKey { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the username.
+        /// </summary>
+        /// <value>
+        /// The username.
+        /// </value>
         public string Username
         {
             get { return RequestManager.Username; }
             set { RequestManager.Username = value; }
         }
 
+        /// <summary>
+        /// Sets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
         public string Password
         {
             set { RequestManager.Password = value.Hash(); }
@@ -38,16 +66,32 @@ namespace FollwItPortable
         internal readonly ILogger Logger;
 
         #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FollwItClient"/> class.
+        /// </summary>
+        /// <param name="apiKey">The API key.</param>
         public FollwItClient(string apiKey)
             : this(apiKey, null)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FollwItClient"/> class.
+        /// </summary>
+        /// <param name="apiKey">The API key.</param>
+        /// <param name="handler">The handler.</param>
         public FollwItClient(string apiKey, HttpMessageHandler handler)
             : this (apiKey, handler, new NullLogger())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FollwItClient"/> class.
+        /// </summary>
+        /// <param name="apiKey">The API key.</param>
+        /// <param name="handler">The handler.</param>
+        /// <param name="logger">The logger.</param>
+        /// <exception cref="System.ArgumentNullException">apiKey;API key cannot be null or empty</exception>
         public FollwItClient(string apiKey, HttpMessageHandler handler, ILogger logger)
         {
             if (string.IsNullOrEmpty(apiKey))
@@ -64,6 +108,18 @@ namespace FollwItPortable
         #endregion
 
         #region Authentication method
+        /// <summary>
+        /// Authenticates the user.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>True if authenticated</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// username;Username cannot be null or empty
+        /// or
+        /// password;Password cannot be null or empty
+        /// </exception>
         public async Task<bool> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(username))
@@ -89,6 +145,14 @@ namespace FollwItPortable
 
         #region Calendar Method
 
+        /// <summary>
+        /// Gets the popular episodes.
+        /// </summary>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A list of episodes</returns>
         public async Task<List<FollwItEpisode>> GetPopularEpisodesAsync(DateTime? startDate = null, DateTime? endDate = null, string locale = "en", CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!startDate.HasValue)
@@ -108,6 +172,15 @@ namespace FollwItPortable
         #endregion
 
         #region Get Movie Methods
+        /// <summary>
+        /// Gets the similar movies asynchronous.
+        /// </summary>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="movieId">The movie identifier.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movieId;MovieID cannot be null or empty</exception>
         public async Task<List<FollwItMovie>> GetSimilarMoviesAsync(MovieIdentificationType identificationType, string movieId, string locale = "en", CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(movieId))
@@ -120,6 +193,15 @@ namespace FollwItPortable
             return await GetResponse<List<FollwItMovie>>(GetMethods.MovieSimilarMovies, methodParams, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the movie details asynchronous.
+        /// </summary>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="movieId">The movie identifier.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movieId;MovieID cannot be null or empty</exception>
         public async Task<FollwItMovie> GetMovieDetailsAsync(MovieIdentificationType identificationType, string movieId, string locale = "en", CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(movieId))
@@ -132,6 +214,15 @@ namespace FollwItPortable
             return await GetResponse<FollwItMovie>(GetMethods.MovieSimilarMovies, methodParams, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the trending movies asynchronous.
+        /// </summary>
+        /// <param name="timeInterval">The time interval.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="limit">The limit.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">TimeInterval cannot be NewShow for Movies</exception>
         public async Task<List<FollwItMovieSummary>> GetTrendingMoviesAsync(TimeInterval timeInterval, string locale = "en", int limit = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (timeInterval == TimeInterval.NewShows)
@@ -148,6 +239,15 @@ namespace FollwItPortable
         #endregion
 
         #region Get Show Methods
+        /// <summary>
+        /// Gets the show details asynchronous.
+        /// </summary>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="showId">The show identifier.</param>
+        /// <param name="includeEpisodes">if set to <c>true</c> [include episodes].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">showId;ShowID cannot be null or empty</exception>
         public async Task<FollwItTvShow> GetShowDetailsAsync(ShowIdentificationType identificationType, string showId, bool includeEpisodes = false, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(showId))
@@ -160,6 +260,14 @@ namespace FollwItPortable
             return await GetResponse<FollwItTvShow>(GetMethods.ShowSummary, methodParams, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the trending shows asynchronous.
+        /// </summary>
+        /// <param name="timeInterval">The time interval.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="limit">The limit.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<List<FollwItTvShow>> GetTrendingShowsAsync(TimeInterval timeInterval, string locale = "en", int limit = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             var interval = timeInterval.ToString().ToLower();
@@ -170,6 +278,14 @@ namespace FollwItPortable
         #endregion
 
         #region Get User Methods
+        /// <summary>
+        /// Gets the list asynchronous.
+        /// </summary>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
         public async Task<FollwItList> GetListAsync(string listId, string username = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(username))
@@ -187,6 +303,12 @@ namespace FollwItPortable
             return await GetResponse<FollwItList>(GetMethods.UserList, methodParams, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the user lists asynchronous.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<List<FollwItList>> GetUserListsAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(username))
@@ -197,6 +319,12 @@ namespace FollwItPortable
             return await GetResponse<List<FollwItList>>(GetMethods.UserLists, username, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the user movie collection asynchronous.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<List<FollwItMovieSummary>> GetUserMovieCollectionAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(username))
@@ -207,6 +335,13 @@ namespace FollwItPortable
             return await GetResponse<List<FollwItMovieSummary>>(GetMethods.UserMovieCollection, username, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the user tv collection asynchronous.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="includeEpisodes">if set to <c>true</c> [include episodes].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<List<FollwItTvShow>> GetUserTvCollectionAsync(string username = null, bool includeEpisodes = false, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(username))
@@ -219,6 +354,12 @@ namespace FollwItPortable
             return await GetResponse<List<FollwItTvShow>>(GetMethods.UserTvCollection, methodParams, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the public profile asynchronous.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<FollwItUser> GetPublicProfileAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(username))
@@ -229,6 +370,13 @@ namespace FollwItPortable
             return await GetResponse<FollwItUser>(GetMethods.UserPublicProfile, username, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the username available asynchronous.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">username;Username cannot be null or empty</exception>
         public async Task<bool> GetUsernameAvailableAsync(string username, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(username))
@@ -273,7 +421,7 @@ namespace FollwItPortable
             Logger.Debug("POST: {0}", url);
             var requestTime = DateTime.Now;
 
-            var response = await HttpClient.PostAsync(url, new StringContent(""), cancellationToken);
+            var response = await HttpClient.PostAsync(url, new StringContent(requestBody), cancellationToken);
             var duration = DateTime.Now - requestTime;
 
             Logger.Debug("Received {0} status after {1}ms from {2}: {3}", response.StatusCode, duration.TotalMilliseconds, "POST", url);
@@ -292,33 +440,5 @@ namespace FollwItPortable
         {
             return string.Format(BaseUrlFormat, ApiKey, endPoint, methodParams);
         }
-    }
-
-    public enum MovieIdentificationType
-    {
-        [Description("movie_id")]
-        FollwIt,
-        [Description("imdb_id")]
-        Imdb,
-        [Description("tmdb_id")]
-        Tmdb
-    }
-
-    public enum ShowIdentificationType
-    {
-        [Description("movie_id")]
-        FollwIt,
-        [Description("imdb_id")]
-        Imdb,
-        [Description("tvdb_id")]
-        Tvdb
-    }
-
-    public enum TimeInterval
-    {
-        Week,
-        Month,
-        AllTime,
-        NewShows
     }
 }
