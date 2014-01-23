@@ -1508,7 +1508,7 @@ namespace FollwItPortable
 
         #region Post Movie Methods
         /// <summary>
-        /// Bulks the change movies asynchronous.
+        /// Bulks the change movies.
         /// </summary>
         /// <param name="movies">The movies.</param>
         /// <param name="inCollection">The in collection.</param>
@@ -1534,7 +1534,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Adds the movie to collection asynchronous.
+        /// Adds the movie to collection.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
@@ -1566,7 +1566,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Adds the movie to collection asynchronous.
+        /// Adds the movie to collection.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -1595,7 +1595,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Adds the movie to list asynchronous.
+        /// Adds the movie to list.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="listId">The list identifier.</param>
@@ -1636,7 +1636,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Adds the movie to list asynchronous.
+        /// Adds the movie to list.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -1671,7 +1671,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Changes the movie rating asynchronous.
+        /// Changes the movie rating.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="rating">The rating.</param>
@@ -1703,7 +1703,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Changes the movie rating asynchronous.
+        /// Changes the movie rating.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -1732,7 +1732,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Gets the recommended movies asynchronous.
+        /// Gets the recommended movies.
         /// </summary>
         /// <param name="genres">The genres.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -1753,7 +1753,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Removes the movie from collection asynchronous.
+        /// Removes the movie from collection.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -1784,7 +1784,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Removes the movie from collection asynchronous.
+        /// Removes the movie from collection.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -1811,7 +1811,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Removes the movie from list asynchronous.
+        /// Removes the movie from list.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="listId">The list identifier.</param>
@@ -1852,7 +1852,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Removes the movie from list asynchronous.
+        /// Removes the movie from list.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -1887,7 +1887,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Marks the movie as unwatched asynchronous.
+        /// Marks the movie as unwatched.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -1918,7 +1918,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Marks the movie as unwatched asynchronous.
+        /// Marks the movie as unwatched.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -1945,7 +1945,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Marks the movie as not watching asynchronous.
+        /// Marks the movie as not watching.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -1976,7 +1976,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Marks the movie as not watching asynchronous.
+        /// Marks the movie as not watching.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -2003,7 +2003,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Marks the movie as watching asynchronous.
+        /// Marks the movie as watching.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -2034,7 +2034,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Marks the movie as watching asynchronous.
+        /// Marks the movie as watching.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -2061,7 +2061,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Marks the movie as watched asynchronous.
+        /// Marks the movie as watched.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
@@ -2093,7 +2093,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Marks the movie as watched asynchronous.
+        /// Marks the movie as watched.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -2122,7 +2122,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Gets the user stats for movie asynchronous.
+        /// Gets the user stats for movie.
         /// </summary>
         /// <param name="movie">The movie.</param>
         /// <param name="username">The username.</param>
@@ -2154,7 +2154,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Gets the user stats for movie asynchronous.
+        /// Gets the user stats for movie.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -2185,7 +2185,7 @@ namespace FollwItPortable
         #region Post Show Methods
 
         /// <summary>
-        /// Adds the show to list asynchronous.
+        /// Adds the show to list.
         /// </summary>
         /// <param name="show">The show.</param>
         /// <param name="listId">The list identifier.</param>
@@ -2212,7 +2212,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Adds the show to list asynchronous.
+        /// Adds the show to list.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -2247,7 +2247,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Changes the show rating asynchronous.
+        /// Changes the show rating.
         /// </summary>
         /// <param name="show">The show.</param>
         /// <param name="rating">The rating.</param>
@@ -2265,7 +2265,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Changes the show rating asynchronous.
+        /// Changes the show rating.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -2294,7 +2294,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Gets the recommended shows asynchronous.
+        /// Gets the recommended shows.
         /// </summary>
         /// <param name="genres">The genres.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -2315,7 +2315,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Removes the show from list asynchronous.
+        /// Removes the show from list.
         /// </summary>
         /// <param name="show">The show.</param>
         /// <param name="listId">The list identifier.</param>
@@ -2342,7 +2342,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Removes the show from list asynchronous.
+        /// Removes the show from list.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -2377,7 +2377,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Gets the tv stats for user asynchronous.
+        /// Gets the tv stats for user.
         /// </summary>
         /// <param name="show">The show.</param>
         /// <param name="username">The username.</param>
@@ -2396,7 +2396,7 @@ namespace FollwItPortable
         }
 
         /// <summary>
-        /// Gets the tv stats for user asynchronous.
+        /// Gets the tv stats for user.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="identificationType">Type of the identification.</param>
@@ -2429,6 +2429,142 @@ namespace FollwItPortable
             return await PostResponse<FollwItTvUserStats>(PostMethods.ShowUserStats, await request.SerialiseAsync(), cancellationToken);
         }
         #endregion
+
+        /// <summary>
+        /// Creates the user.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="emailAddress">The email address.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="privateProfile">if set to <c>true</c> [private profile].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// True if the user was created successfully
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">username;Username cannot be null or empty
+        /// or
+        /// password;Password cannot be null or empty
+        /// or
+        /// emailAddress;Email address cannot be null or empty</exception>
+        public async Task<bool> CreateUserAsync(string username, string password, string emailAddress, string locale = "en", bool privateProfile = false, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new ArgumentNullException("username", "Username cannot be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(password))
+            {
+                throw new ArgumentNullException("password", "Password cannot be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(emailAddress))
+            {
+                throw new ArgumentNullException("emailAddress", "Email address cannot be null or empty");
+            }
+
+            var request = new CreateUserRequest
+            {
+                Username = username, 
+                Password = password.Hash(), 
+                EmailAddress = emailAddress, 
+                Locale = locale, 
+                PrivateProfile = privateProfile
+            };
+
+            var response = await PostResponse<CreateUserResponse>(PostMethods.UserCreate, await request.SerialiseAsync(), cancellationToken);
+            if (response.Response != "success")
+            {
+                return false;
+            }
+
+            Username = username;
+            Password = password;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the user list.
+        /// </summary>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
+        public async Task<FollwItList> GetUserListAsync(string listId, string username = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(username))
+            {
+                username = Username;
+            }
+
+            var request = RequestManager.CreateRequestType<UserListRequest>();
+            request.QueryUsername = username;
+            request.ListId = listId;
+
+            return await PostResponse<FollwItList>(PostMethods.UserList, await request.SerialiseAsync(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the users lists.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<List<FollwItList>> GetUsersListsAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                username = Username;
+            }
+
+            var request = RequestManager.CreateRequestType<MovieUserStatsRequest>();
+            request.QueryUsername = username;
+
+            return await PostResponse<List<FollwItList>>(PostMethods.UserLists, await request.SerialiseAsync(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the online changes.
+        /// </summary>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<List<FollwItOnlineChange>> GetOnlineChangesAsync(DateTime startDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<OnlineChangesRequest>();
+            request.StartDate = startDate;
+
+            var requestString = await request.SerialiseAsync(new DateConverter());
+
+            return await PostResponse<List<FollwItOnlineChange>>(PostMethods.UserOnlineChanges, requestString, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the full profile.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<FollwItFullProfile> GetFullProfileAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                username = Username;
+            }
+
+            var request = RequestManager.CreateRequestType<MovieUserStatsRequest>();
+            request.QueryUsername = username;
+
+            return await PostResponse<FollwItFullProfile>(PostMethods.UserProfile, await request.SerialiseAsync(), cancellationToken);
+        }
 
         #region Web Requests
         private async Task<TReturnType> GetResponse<TReturnType>(string endPoint, string methodParams, CancellationToken cancellationToken = default(CancellationToken), [CallerMemberName] string callingMethod = "")

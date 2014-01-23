@@ -47,7 +47,10 @@
     <Compile Include="Extensions\MovieExtensions.cs" />
     <Compile Include="Extensions\SerialisationExtensions.cs" />
     <Compile Include="FollwItClient.cs" />
+    <Compile Include="Model\ChangeType.cs" />
+    <Compile Include="Model\CreateUserResponse.cs" />
     <Compile Include="Model\FollwItEpisodeSummary.cs" />
+    <Compile Include="Model\FollwItFullProfile.cs" />
     <Compile Include="Model\FollwItGenre.cs" />
     <Compile Include="GetMethods.cs" />
     <Compile Include="Logging\ILogger.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="Model\FollwItList.cs" />
     <Compile Include="Model\FollwItListEntry.cs" />
     <Compile Include="Model\FollwItMovie.cs" />
+    <Compile Include="Model\FollwItOnlineChange.cs" />
     <Compile Include="Model\FollwItTrailer.cs" />
     <Compile Include="Model\FollwItTvCollection.cs" />
     <Compile Include="Model\FollwItTvShow.cs" />
@@ -76,6 +80,7 @@
     <Compile Include="Model\Requests\BulkEpisodeChangeRequest.cs" />
     <Compile Include="Model\Requests\BulkMovieChangeRequest.cs" />
     <Compile Include="Model\Requests\CalendarFollwingRequest.cs" />
+    <Compile Include="Model\Requests\CreateUserRequest.cs" />
     <Compile Include="Model\Requests\EpisodeCollectionRequest.cs" />
     <Compile Include="Model\Requests\EpisodeListRequest.cs" />
     <Compile Include="Model\Requests\EpisodeRatingRequest.cs" />
@@ -84,6 +89,7 @@
     <Compile Include="Model\Requests\MovieCollectionRequest.cs" />
     <Compile Include="Model\Requests\MovieListRequest.cs" />
     <Compile Include="Model\Requests\MovieRatingRequest.cs" />
+    <Compile Include="Model\Requests\OnlineChangesRequest.cs" />
     <Compile Include="Model\Requests\RecommendedRequest.cs" />
     <Compile Include="Model\Requests\MovieUserStatsRequest.cs" />
     <Compile Include="Model\Requests\RequestManager.cs" />
@@ -91,6 +97,7 @@
     <Compile Include="Model\Requests\ShowListRequest.cs" />
     <Compile Include="Model\Requests\ShowRatingRequest.cs" />
     <Compile Include="Model\Requests\ShowUserStatsRequest.cs" />
+    <Compile Include="Model\Requests\UserListRequest.cs" />
     <Compile Include="Model\Responses\AuthenticationResponse.cs" />
     <Compile Include="Model\MovieIdentificationType.cs" />
     <Compile Include="PostMethods.cs" />
