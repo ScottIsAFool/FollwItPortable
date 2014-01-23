@@ -25,13 +25,13 @@ namespace FollwItPortable.Model
         public FollwItAchievement[] Achievements { get; set; }
 
         [JsonProperty("watching_movie")]
-        public FollwItWatchingMovie[] WatchingMovie { get; set; }
+        public FollwItMovie[] WatchingMovies { get; set; }
 
         [JsonProperty("watched_movie")]
-        public FollwItWatchedMovie WatchedMovie { get; set; }
+        public FollwItMovie WatchedMovie { get; set; }
 
         [JsonProperty("watching_episode")]
-        public FollwItWatchingEpisode[] WatchingEpisode { get; set; }
+        public FollwItWatchingEpisode[] WatchingEpisodes { get; set; }
 
         [JsonProperty("watched_episode")]
         public FollwItWatchedEpisode WatchedEpisode { get; set; }

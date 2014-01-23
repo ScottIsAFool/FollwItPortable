@@ -4,22 +4,21 @@ using PropertyChanged;
 namespace FollwItPortable.Model
 {
     [ImplementPropertyChanged]
-    public class EpisodeResponse
+    public class BulkMovieResponse
     {
         [JsonProperty("client_id")]
         public int ClientId { get; set; }
 
-        [JsonProperty("episode_id")]
-        public int EpisodeId { get; set; }
+        [JsonProperty("movie_id")]
+        public string MovieId { get; set; }
+
+        [JsonProperty("in_collection")]
+        public bool InCollection { get; set; }
 
         [JsonProperty("rating")]
-        public int Rating { get; set; }
+        public string Rating { get; set; }
 
         [JsonProperty("watched")]
         public bool Watched { get; set; }
-
-        [JsonProperty("status")]
-        public string Status { get; set; }
     }
-
 }
