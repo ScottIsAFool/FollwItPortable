@@ -14,5 +14,10 @@ namespace FollwItPortable.Extensions
         {
             return Task.Factory.StartNew(() => JsonConvert.SerializeObject(item));
         }
+
+        internal static Task<string> SerialiseAsync(this object item, JsonConverter converter)
+        {
+            return Task.Factory.StartNew(() => JsonConvert.SerializeObject(item, converter));
+        }
     }
 }

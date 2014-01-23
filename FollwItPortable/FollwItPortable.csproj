@@ -43,12 +43,14 @@
     <Compile Include="Attributes\DescriptionAttribute.cs" />
     <Compile Include="Converters\JsonConverters.cs" />
     <Compile Include="Extensions\AttributeExtensions.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\SerialisationExtensions.cs" />
     <Compile Include="FollwItClient.cs" />
     <Compile Include="GetMethods.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\LogSeverity.cs" />
     <Compile Include="Logging\NullLogger.cs" />
+    <Compile Include="Model\EpisodeResponse.cs" />
     <Compile Include="Model\FollwItAchievement.cs" />
     <Compile Include="Model\FollwItActor.cs" />
     <Compile Include="Model\FollwItDirector.cs" />
@@ -70,6 +72,10 @@
     <Compile Include="Model\FollwItWriter.cs" />
     <Compile Include="Model\Requests\AuthenticationRequest.cs" />
     <Compile Include="Model\Requests\BaseRequest.cs" />
+    <Compile Include="Model\Requests\BulkEpisodeChangeRequest.cs" />
+    <Compile Include="Model\Requests\CalendarFollwingRequest.cs" />
+    <Compile Include="Model\Requests\EpisodeCollectionRequest.cs" />
+    <Compile Include="Model\Requests\EpisodeListRequest.cs" />
     <Compile Include="Model\Requests\RequestManager.cs" />
     <Compile Include="Model\Responses\AuthenticationResponse.cs" />
     <Compile Include="Model\MovieIdentificationType.cs" />

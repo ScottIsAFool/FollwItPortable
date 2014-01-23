@@ -4,6 +4,7 @@ using System.Linq;
 using FollwItPortable.Extensions;
 using FollwItPortable.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace FollwItPortable.Converters
 {
@@ -33,6 +34,29 @@ namespace FollwItPortable.Converters
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof (string);
+        }
+    }
+
+    public class DateConverter : DateTimeConverterBase
+    {
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var date = (DateTime) value;
+            writer.WriteValue(date.ToString(FollwItClient.DateFormat));
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.Value == null) return null;
+            var dateString = (string) reader.Value;
+
+            DateTime date;
+            if (DateTime.TryParse(dateString, out date))
+            {
+                return date;
+            }
+
+            return null;
         }
     }
 }

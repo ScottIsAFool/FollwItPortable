@@ -2,7 +2,7 @@
 
 namespace FollwItPortable.Model.Requests
 {
-    internal class BaseRequest
+    internal abstract class BaseRequest
     {
         [JsonProperty("username")]
         internal string Username { get; set; }
