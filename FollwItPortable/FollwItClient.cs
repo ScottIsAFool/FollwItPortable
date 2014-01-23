@@ -1739,12 +1739,12 @@ namespace FollwItPortable
         /// <returns></returns>
         public async Task<List<FollwItMovie>> GetRecommendedMoviesAsync(List<FollwItGenre> genres, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (genres.IsNullOrEmpty())
+            if (genres == null)
             {
-                return new List<FollwItMovie>();
+                genres = new List<FollwItGenre>();
             }
 
-            var request = RequestManager.CreateRequestType<MovieRecommendedRequest>();
+            var request = RequestManager.CreateRequestType<RecommendedRequest>();
 
             var genreString = string.Join("|", genres.Select(x => x.GetDescription().ToLower()));
             request.Genres = genreString;
@@ -2179,6 +2179,254 @@ namespace FollwItPortable
             }
 
             return await PostResponse<FollwItUserStats>(PostMethods.ShowUserStats, await request.SerialiseAsync(), cancellationToken);
+        }
+        #endregion
+
+        #region Post Show Methods
+
+        /// <summary>
+        /// Adds the show to list asynchronous.
+        /// </summary>
+        /// <param name="show">The show.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// show;Show cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty.
+        /// </exception>
+        public async Task<bool> AddShowToListAsync(FollwItTvShow show, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (show == null)
+            {
+                throw new ArgumentNullException("show", "Show cannot be null");
+            }
+
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty.");
+            }
+
+            return await AddShowToListAsync(show.FollwitSeriesId, ShowIdentificationType.FollwIt, listId, cancellationToken);
+        }
+
+        /// <summary>
+        /// Adds the show to list asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a supported type for this method</exception>
+        public async Task<bool> AddShowToListAsync(int id, ShowIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty.");
+            }
+
+            var request = RequestManager.CreateRequestType<ShowListRequest>();
+            request.ListId = listId;
+            switch (identificationType)
+            {
+                case ShowIdentificationType.FollwIt:
+                    request.ShowId = id;
+                    break;
+                case ShowIdentificationType.Imdb:
+                    throw new InvalidOperationException("Imdb is not a supported type for this method");
+                case ShowIdentificationType.Tvdb:
+                    request.TvdbId = id;
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.ShowList, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Changes the show rating asynchronous.
+        /// </summary>
+        /// <param name="show">The show.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">show;Show cannot be null</exception>
+        public async Task<bool> ChangeShowRatingAsync(FollwItTvShow show, int rating, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (show == null)
+            {
+                throw new ArgumentNullException("show", "Show cannot be null");
+            }
+
+            return await ChangeShowRatingAsync(show.FollwitSeriesId, ShowIdentificationType.FollwIt, rating, cancellationToken);
+        }
+
+        /// <summary>
+        /// Changes the show rating asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a supported type for this method</exception>
+        public async Task<bool> ChangeShowRatingAsync(int id, ShowIdentificationType identificationType, int rating, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<ShowRatingRequest>();
+            request.Rating = rating;
+            switch (identificationType)
+            {
+                case ShowIdentificationType.FollwIt:
+                    request.ShowId = id;
+                    break;
+                case ShowIdentificationType.Imdb:
+                    throw new InvalidOperationException("Imdb is not a supported type for this method");
+                case ShowIdentificationType.Tvdb:
+                    request.TvdbId = id;
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.ShowRate, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Gets the recommended shows asynchronous.
+        /// </summary>
+        /// <param name="genres">The genres.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<List<FollwItTvShow>> GetRecommendedShowsAsync(List<FollwItGenre> genres, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (genres == null)
+            {
+                genres = new List<FollwItGenre>();
+            }
+
+            var request = RequestManager.CreateRequestType<RecommendedRequest>();
+
+            var genreString = string.Join("|", genres.Select(x => x.GetDescription().ToLower()));
+            request.Genres = genreString;
+
+            return await PostResponse<List<FollwItTvShow>>(PostMethods.ShowRecommendations, await request.SerialiseAsync(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Removes the show from list asynchronous.
+        /// </summary>
+        /// <param name="show">The show.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// show;Show cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty.
+        /// </exception>
+        public async Task<bool> RemoveShowFromListAsync(FollwItTvShow show, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (show == null)
+            {
+                throw new ArgumentNullException("show", "Show cannot be null");
+            }
+
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty.");
+            }
+
+            return await RemoveShowFromListAsync(show.FollwitSeriesId, ShowIdentificationType.FollwIt, listId, cancellationToken);
+        }
+
+        /// <summary>
+        /// Removes the show from list asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a supported type for this method</exception>
+        public async Task<bool> RemoveShowFromListAsync(int id, ShowIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty.");
+            }
+
+            var request = RequestManager.CreateRequestType<ShowListRequest>();
+            request.ListId = listId;
+            switch (identificationType)
+            {
+                case ShowIdentificationType.FollwIt:
+                    request.ShowId = id;
+                    break;
+                case ShowIdentificationType.Imdb:
+                    throw new InvalidOperationException("Imdb is not a supported type for this method");
+                case ShowIdentificationType.Tvdb:
+                    request.TvdbId = id;
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.ShowUnlist, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Gets the tv stats for user asynchronous.
+        /// </summary>
+        /// <param name="show">The show.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="includeEpisodes">if set to <c>true</c> [include episodes].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">show;Show cannot be null</exception>
+        public async Task<FollwItTvUserStats> GetTvStatsForUserAsync(FollwItTvShow show, string username = null, bool includeEpisodes = false, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (show == null)
+            {
+                throw new ArgumentNullException("show", "Show cannot be null");
+            }
+
+            return await GetTvStatsForUserAsync(show.FollwitSeriesId, ShowIdentificationType.FollwIt, username, includeEpisodes, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the tv stats for user asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="includeEpisodes">if set to <c>true</c> [include episodes].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a supported type for this method</exception>
+        public async Task<FollwItTvUserStats> GetTvStatsForUserAsync(int id, ShowIdentificationType identificationType, string username = null, bool includeEpisodes = false, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                username = Username;
+            }
+
+            var request = RequestManager.CreateRequestType<ShowUserStatsRequest>();
+            request.QueryUsername = username;
+            switch (identificationType)
+            {
+                case ShowIdentificationType.FollwIt:
+                    request.ShowId = id;
+                    break;
+                case ShowIdentificationType.Imdb:
+                    throw new InvalidOperationException("Imdb is not a supported type for this method");
+                case ShowIdentificationType.Tvdb:
+                    request.TvdbId = id;
+                    break;
+            }
+
+            return await PostResponse<FollwItTvUserStats>(PostMethods.ShowUserStats, await request.SerialiseAsync(), cancellationToken);
         }
         #endregion
 

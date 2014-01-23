@@ -31,9 +31,9 @@ namespace FollwItPortable.Model
         public FollwItMovie WatchedMovie { get; set; }
 
         [JsonProperty("watching_episode")]
-        public FollwItWatchingEpisode[] WatchingEpisodes { get; set; }
+        public FollwItEpisode[] WatchingEpisodes { get; set; }
 
         [JsonProperty("watched_episode")]
-        public FollwItWatchedEpisode WatchedEpisode { get; set; }
+        public FollwItEpisode WatchedEpisode { get; set; }
     }
 }

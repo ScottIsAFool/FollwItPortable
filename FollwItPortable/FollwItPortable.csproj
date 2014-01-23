@@ -47,6 +47,7 @@
     <Compile Include="Extensions\MovieExtensions.cs" />
     <Compile Include="Extensions\SerialisationExtensions.cs" />
     <Compile Include="FollwItClient.cs" />
+    <Compile Include="Model\FollwItEpisodeSummary.cs" />
     <Compile Include="Model\FollwItGenre.cs" />
     <Compile Include="GetMethods.cs" />
     <Compile Include="Logging\ILogger.cs" />
@@ -65,11 +66,10 @@
     <Compile Include="Model\FollwItTrailer.cs" />
     <Compile Include="Model\FollwItTvCollection.cs" />
     <Compile Include="Model\FollwItTvShow.cs" />
+    <Compile Include="Model\FollwItTvUserStats.cs" />
     <Compile Include="Model\FollwItUser.cs" />
     <Compile Include="Model\FollwItUsernameAvailable.cs" />
     <Compile Include="Model\FollwItUserStats.cs" />
-    <Compile Include="Model\FollwItWatchedEpisode.cs" />
-    <Compile Include="Model\FollwItWatchingEpisode.cs" />
     <Compile Include="Model\FollwItWriter.cs" />
     <Compile Include="Model\Requests\AuthenticationRequest.cs" />
     <Compile Include="Model\Requests\BaseRequest.cs" />
@@ -84,9 +84,13 @@
     <Compile Include="Model\Requests\MovieCollectionRequest.cs" />
     <Compile Include="Model\Requests\MovieListRequest.cs" />
     <Compile Include="Model\Requests\MovieRatingRequest.cs" />
-    <Compile Include="Model\Requests\MovieRecommendedRequest.cs" />
+    <Compile Include="Model\Requests\RecommendedRequest.cs" />
     <Compile Include="Model\Requests\MovieUserStatsRequest.cs" />
     <Compile Include="Model\Requests\RequestManager.cs" />
+    <Compile Include="Model\Requests\ShowBaseRequest.cs" />
+    <Compile Include="Model\Requests\ShowListRequest.cs" />
+    <Compile Include="Model\Requests\ShowRatingRequest.cs" />
+    <Compile Include="Model\Requests\ShowUserStatsRequest.cs" />
     <Compile Include="Model\Responses\AuthenticationResponse.cs" />
     <Compile Include="Model\MovieIdentificationType.cs" />
     <Compile Include="PostMethods.cs" />
