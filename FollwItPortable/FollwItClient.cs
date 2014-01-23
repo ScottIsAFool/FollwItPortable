@@ -1506,6 +1506,16 @@ namespace FollwItPortable
         }
         #endregion
 
+        #region Post Movie Methods
+        /// <summary>
+        /// Bulks the change movies asynchronous.
+        /// </summary>
+        /// <param name="movies">The movies.</param>
+        /// <param name="inCollection">The in collection.</param>
+        /// <param name="watched">The watched.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<List<BulkMovieResponse>> BulkChangeMoviesAsync(List<FollwItMovie> movies, bool? inCollection = null, bool? watched = null, int? rating = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (movies.IsNullOrEmpty())
@@ -1523,6 +1533,15 @@ namespace FollwItPortable
             return await PostResponse<List<BulkMovieResponse>>(PostMethods.MovieBulkAction, await request.SerialiseAsync(), cancellationToken);
         }
 
+        /// <summary>
+        /// Adds the movie to collection asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
         public async Task<bool> AddMovieToCollectionAsync(FollwItMovie movie, bool insertInStream = true, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (movie == null)
@@ -1546,6 +1565,14 @@ namespace FollwItPortable
             throw new InvalidOperationException("Movie didn't contain a valid ID");
         }
 
+        /// <summary>
+        /// Adds the movie to collection asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<bool> AddMovieToCollectionAsync(string id, MovieIdentificationType identificationType, bool insertInStream = true, CancellationToken cancellationToken = default(CancellationToken))
         {
             var request = RequestManager.CreateRequestType<MovieCollectionRequest>();
@@ -1567,6 +1594,19 @@ namespace FollwItPortable
             return response.ToLower().Contains("success");
         }
 
+        /// <summary>
+        /// Adds the movie to list asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// movie;Movie cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty.
+        /// </exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
         public async Task<bool> AddMovieToListAsync(FollwItMovie movie, string listId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (movie == null)
@@ -1595,6 +1635,15 @@ namespace FollwItPortable
             throw new InvalidOperationException("Movie didn't contain a valid ID");
         }
 
+        /// <summary>
+        /// Adds the movie to list asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty.</exception>
         public async Task<bool> AddMovieToListAsync(string id, MovieIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(listId))
@@ -1621,6 +1670,15 @@ namespace FollwItPortable
             return response.ToLower().Contains("success");
         }
 
+        /// <summary>
+        /// Changes the movie rating asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
         public async Task<bool> ChangeMovieRatingAsync(FollwItMovie movie, int rating, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (movie == null)
@@ -1644,6 +1702,14 @@ namespace FollwItPortable
             throw new InvalidOperationException("Movie didn't contain a valid ID");
         }
 
+        /// <summary>
+        /// Changes the movie rating asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<bool> ChangeMovieRatingAsync(string id, MovieIdentificationType identificationType, int rating, CancellationToken cancellationToken = default(CancellationToken))
         {
             var request = RequestManager.CreateRequestType<MovieRatingRequest>();
@@ -1665,10 +1731,456 @@ namespace FollwItPortable
             return response.ToLower().Contains("success");
         }
 
+        /// <summary>
+        /// Gets the recommended movies asynchronous.
+        /// </summary>
+        /// <param name="genres">The genres.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<List<FollwItMovie>> GetRecommendedMoviesAsync(List<FollwItGenre> genres, CancellationToken cancellationToken = default(CancellationToken))
         {
-            
-        } 
+            if (genres.IsNullOrEmpty())
+            {
+                return new List<FollwItMovie>();
+            }
+
+            var request = RequestManager.CreateRequestType<MovieRecommendedRequest>();
+
+            var genreString = string.Join("|", genres.Select(x => x.GetDescription().ToLower()));
+            request.Genres = genreString;
+
+            return await PostResponse<List<FollwItMovie>>(PostMethods.MovieRecommendations, await request.SerialiseAsync(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Removes the movie from collection asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        public async Task<bool> RemoveMovieFromCollectionAsync(FollwItMovie movie, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (movie == null)
+            {
+                throw new ArgumentNullException("movie", "Movie cannot be null");
+            }
+
+            if (!string.IsNullOrEmpty(movie.Id))
+            {
+                return await RemoveMovieFromCollectionAsync(movie.Id, MovieIdentificationType.FollwIt, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.ImdbId))
+            {
+                return await RemoveMovieFromCollectionAsync(movie.ImdbId, MovieIdentificationType.Imdb, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.TmdbId))
+            {
+                return await RemoveMovieFromCollectionAsync(movie.TmdbId, MovieIdentificationType.Tmdb, cancellationToken);
+            }
+
+            throw new InvalidOperationException("Movie didn't contain a valid ID");
+        }
+
+        /// <summary>
+        /// Removes the movie from collection asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveMovieFromCollectionAsync(string id, MovieIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<MovieBaseRequest>();
+            switch (identificationType)
+            {
+                case MovieIdentificationType.FollwIt:
+                    request.MovieId = int.Parse(id);
+                    break;
+                case MovieIdentificationType.Imdb:
+                    request.ImdbId = id;
+                    break;
+                case MovieIdentificationType.Tmdb:
+                    request.TmdbId = int.Parse(id);
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.MovieUncollection, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Removes the movie from list asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// movie;Movie cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty.
+        /// </exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        public async Task<bool> RemoveMovieFromListAsync(FollwItMovie movie, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (movie == null)
+            {
+                throw new ArgumentNullException("movie", "Movie cannot be null");
+            }
+
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty.");
+            }
+
+            if (!string.IsNullOrEmpty(movie.Id))
+            {
+                return await AddMovieToListAsync(movie.Id, MovieIdentificationType.FollwIt, listId, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.ImdbId))
+            {
+                return await AddMovieToListAsync(movie.ImdbId, MovieIdentificationType.Imdb, listId, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.TmdbId))
+            {
+                return await AddMovieToListAsync(movie.TmdbId, MovieIdentificationType.Tmdb, listId, cancellationToken);
+            }
+
+            throw new InvalidOperationException("Movie didn't contain a valid ID");
+        }
+
+        /// <summary>
+        /// Removes the movie from list asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty.</exception>
+        public async Task<bool> RemoveMovieFromListAsync(string id, MovieIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty.");
+            }
+
+            var request = RequestManager.CreateRequestType<MovieListRequest>();
+            request.ListId = listId;
+            switch (identificationType)
+            {
+                case MovieIdentificationType.FollwIt:
+                    request.MovieId = int.Parse(id);
+                    break;
+                case MovieIdentificationType.Imdb:
+                    request.ImdbId = id;
+                    break;
+                case MovieIdentificationType.Tmdb:
+                    request.TmdbId = int.Parse(id);
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.MovieUnlist, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Marks the movie as unwatched asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        public async Task<bool> MarkMovieAsUnwatchedAsync(FollwItMovie movie, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (movie == null)
+            {
+                throw new ArgumentNullException("movie", "Movie cannot be null");
+            }
+
+            if (!string.IsNullOrEmpty(movie.Id))
+            {
+                return await MarkMovieAsUnwatchedAsync(movie.Id, MovieIdentificationType.FollwIt, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.ImdbId))
+            {
+                return await MarkMovieAsUnwatchedAsync(movie.ImdbId, MovieIdentificationType.Imdb, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.TmdbId))
+            {
+                return await MarkMovieAsUnwatchedAsync(movie.TmdbId, MovieIdentificationType.Tmdb, cancellationToken);
+            }
+
+            throw new InvalidOperationException("Movie didn't contain a valid ID");
+        }
+
+        /// <summary>
+        /// Marks the movie as unwatched asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> MarkMovieAsUnwatchedAsync(string id, MovieIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<MovieBaseRequest>();
+            switch (identificationType)
+            {
+                case MovieIdentificationType.FollwIt:
+                    request.MovieId = int.Parse(id);
+                    break;
+                case MovieIdentificationType.Imdb:
+                    request.ImdbId = id;
+                    break;
+                case MovieIdentificationType.Tmdb:
+                    request.TmdbId = int.Parse(id);
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.MovieUnwatched, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Marks the movie as not watching asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        public async Task<bool> MarkMovieAsNotWatchingAsync(FollwItMovie movie, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (movie == null)
+            {
+                throw new ArgumentNullException("movie", "Movie cannot be null");
+            }
+
+            if (!string.IsNullOrEmpty(movie.Id))
+            {
+                return await MarkMovieAsNotWatchingAsync(movie.Id, MovieIdentificationType.FollwIt, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.ImdbId))
+            {
+                return await MarkMovieAsNotWatchingAsync(movie.ImdbId, MovieIdentificationType.Imdb, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.TmdbId))
+            {
+                return await MarkMovieAsNotWatchingAsync(movie.TmdbId, MovieIdentificationType.Tmdb, cancellationToken);
+            }
+
+            throw new InvalidOperationException("Movie didn't contain a valid ID");
+        }
+
+        /// <summary>
+        /// Marks the movie as not watching asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> MarkMovieAsNotWatchingAsync(string id, MovieIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<MovieBaseRequest>();
+            switch (identificationType)
+            {
+                case MovieIdentificationType.FollwIt:
+                    request.MovieId = int.Parse(id);
+                    break;
+                case MovieIdentificationType.Imdb:
+                    request.ImdbId = id;
+                    break;
+                case MovieIdentificationType.Tmdb:
+                    request.TmdbId = int.Parse(id);
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.MovieUnwatching, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Marks the movie as watching asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        public async Task<bool> MarkMovieAsWatchingAsync(FollwItMovie movie, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (movie == null)
+            {
+                throw new ArgumentNullException("movie", "Movie cannot be null");
+            }
+
+            if (!string.IsNullOrEmpty(movie.Id))
+            {
+                return await MarkMovieAsWatchingAsync(movie.Id, MovieIdentificationType.FollwIt, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.ImdbId))
+            {
+                return await MarkMovieAsWatchingAsync(movie.ImdbId, MovieIdentificationType.Imdb, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.TmdbId))
+            {
+                return await MarkMovieAsWatchingAsync(movie.TmdbId, MovieIdentificationType.Tmdb, cancellationToken);
+            }
+
+            throw new InvalidOperationException("Movie didn't contain a valid ID");
+        }
+
+        /// <summary>
+        /// Marks the movie as watching asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> MarkMovieAsWatchingAsync(string id, MovieIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<MovieBaseRequest>();
+            switch (identificationType)
+            {
+                case MovieIdentificationType.FollwIt:
+                    request.MovieId = int.Parse(id);
+                    break;
+                case MovieIdentificationType.Imdb:
+                    request.ImdbId = id;
+                    break;
+                case MovieIdentificationType.Tmdb:
+                    request.TmdbId = int.Parse(id);
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.MovieWatching, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Marks the movie as watched asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        public async Task<bool> MarkMovieAsWatchedAsync(FollwItMovie movie, bool insertInStream = true, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (movie == null)
+            {
+                throw new ArgumentNullException("movie", "Movie cannot be null");
+            }
+
+            if (!string.IsNullOrEmpty(movie.Id))
+            {
+                return await MarkMovieAsWatchedAsync(movie.Id, MovieIdentificationType.FollwIt, insertInStream, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.ImdbId))
+            {
+                return await MarkMovieAsWatchedAsync(movie.ImdbId, MovieIdentificationType.Imdb, insertInStream, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.TmdbId))
+            {
+                return await MarkMovieAsWatchedAsync(movie.TmdbId, MovieIdentificationType.Tmdb, insertInStream, cancellationToken);
+            }
+
+            throw new InvalidOperationException("Movie didn't contain a valid ID");
+        }
+
+        /// <summary>
+        /// Marks the movie as watched asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> MarkMovieAsWatchedAsync(string id, MovieIdentificationType identificationType, bool insertInStream = true, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<MovieCollectionRequest>();
+            request.InsertInStream = insertInStream;
+            switch (identificationType)
+            {
+                case MovieIdentificationType.FollwIt:
+                    request.MovieId = int.Parse(id);
+                    break;
+                case MovieIdentificationType.Imdb:
+                    request.ImdbId = id;
+                    break;
+                case MovieIdentificationType.Tmdb:
+                    request.TmdbId = int.Parse(id);
+                    break;
+            }
+
+            var response = await PostResponse<string>(PostMethods.MovieWatched, await request.SerialiseAsync(), cancellationToken);
+            return response.ToLower().Contains("success");
+        }
+
+        /// <summary>
+        /// Gets the user stats for movie asynchronous.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        public async Task<FollwItUserStats> GetUserStatsForMovieAsync(FollwItMovie movie, string username = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (movie == null)
+            {
+                throw new ArgumentNullException("movie", "Movie cannot be null");
+            }
+
+            if (!string.IsNullOrEmpty(movie.Id))
+            {
+                return await GetUserStatsForMovieAsync(movie.Id, MovieIdentificationType.FollwIt, username, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.ImdbId))
+            {
+                return await GetUserStatsForMovieAsync(movie.ImdbId, MovieIdentificationType.Imdb, username, cancellationToken);
+            }
+            if (!string.IsNullOrEmpty(movie.TmdbId))
+            {
+                return await GetUserStatsForMovieAsync(movie.TmdbId, MovieIdentificationType.Tmdb, username, cancellationToken);
+            }
+
+            throw new InvalidOperationException("Movie didn't contain a valid ID");
+        }
+
+        /// <summary>
+        /// Gets the user stats for movie asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<FollwItUserStats> GetUserStatsForMovieAsync(string id, MovieIdentificationType identificationType, string username = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<MovieUserStatsRequest>();
+            request.QueryUsername = username;
+            switch (identificationType)
+            {
+                case MovieIdentificationType.FollwIt:
+                    request.MovieId = int.Parse(id);
+                    break;
+                case MovieIdentificationType.Imdb:
+                    request.ImdbId = id;
+                    break;
+                case MovieIdentificationType.Tmdb:
+                    request.TmdbId = int.Parse(id);
+                    break;
+            }
+
+            return await PostResponse<FollwItUserStats>(PostMethods.ShowUserStats, await request.SerialiseAsync(), cancellationToken);
+        }
+        #endregion
 
         #region Web Requests
         private async Task<TReturnType> GetResponse<TReturnType>(string endPoint, string methodParams, CancellationToken cancellationToken = default(CancellationToken), [CallerMemberName] string callingMethod = "")

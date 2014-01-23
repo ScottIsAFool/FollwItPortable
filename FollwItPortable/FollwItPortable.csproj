@@ -67,6 +67,7 @@
     <Compile Include="Model\FollwItTvShow.cs" />
     <Compile Include="Model\FollwItUser.cs" />
     <Compile Include="Model\FollwItUsernameAvailable.cs" />
+    <Compile Include="Model\FollwItUserStats.cs" />
     <Compile Include="Model\FollwItWatchedEpisode.cs" />
     <Compile Include="Model\FollwItWatchingEpisode.cs" />
     <Compile Include="Model\FollwItWriter.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Model\Requests\MovieListRequest.cs" />
     <Compile Include="Model\Requests\MovieRatingRequest.cs" />
     <Compile Include="Model\Requests\MovieRecommendedRequest.cs" />
+    <Compile Include="Model\Requests\MovieUserStatsRequest.cs" />
     <Compile Include="Model\Requests\RequestManager.cs" />
     <Compile Include="Model\Responses\AuthenticationResponse.cs" />
     <Compile Include="Model\MovieIdentificationType.cs" />
