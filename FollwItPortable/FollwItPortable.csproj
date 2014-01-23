@@ -77,6 +77,7 @@
     <Compile Include="Model\Requests\EpisodeCollectionRequest.cs" />
     <Compile Include="Model\Requests\EpisodeListRequest.cs" />
     <Compile Include="Model\Requests\EpisodeRatingRequest.cs" />
+    <Compile Include="Model\Requests\EpisodeWatchedRequest.cs" />
     <Compile Include="Model\Requests\RequestManager.cs" />
     <Compile Include="Model\Responses\AuthenticationResponse.cs" />
     <Compile Include="Model\MovieIdentificationType.cs" />

@@ -423,7 +423,7 @@ namespace FollwItPortable
         } 
         #endregion
 
-        #region Post Episode Methods
+        //#region Post Episode Methods
 
         /// <summary>
         /// Bulks the change episodes asynchronous.
@@ -512,19 +512,7 @@ namespace FollwItPortable
 
             return await PostEpisodeCollectionInternalAsync(request, cancellationToken);
         }
-
-        /// <summary>
-        /// Adds the episode to list asynchronous.
-        /// </summary>
-        /// <param name="episode">The episode.</param>
-        /// <param name="listId">The list identifier.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// episode;Episode cannot be null
-        /// or
-        /// listId;ListID cannot be null or empty
-        /// </exception>
+        
         public async Task<bool> AddEpisodeToListAsync(FollwItEpisode episode, string listId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (episode == null)
@@ -543,17 +531,7 @@ namespace FollwItPortable
 
             return await PostEpisodeListInternalAsync(request, cancellationToken);
         }
-
-        /// <summary>
-        /// Adds the epiosde to list asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="identificationType">Type of the identification.</param>
-        /// <param name="listId">The list identifier.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
-        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        
         public async Task<bool> AddEpiosdeToListAsync(int id, ShowIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(listId))
@@ -579,16 +557,6 @@ namespace FollwItPortable
             return await PostEpisodeListInternalAsync(request, cancellationToken);
         }
         
-        /// <summary>
-        /// Adds the episode to list asynchronous.
-        /// </summary>
-        /// <param name="tvdbId">The TVDB identifier.</param>
-        /// <param name="seasonNumber">The season number.</param>
-        /// <param name="episodeNumber">The episode number.</param>
-        /// <param name="listId">The list identifier.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
         public async Task<bool> AddEpisodeToListAsync(int tvdbId, int seasonNumber, int episodeNumber, string listId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(listId))
@@ -605,23 +573,6 @@ namespace FollwItPortable
             return await PostEpisodeListInternalAsync(request, cancellationToken);
         }
         
-        /// <summary>
-        /// Adds the episode to list asynchronous.
-        /// </summary>
-        /// <param name="seriesName">Name of the series.</param>
-        /// <param name="seasonNumber">The season number.</param>
-        /// <param name="episodeNumber">The episode number.</param>
-        /// <param name="episodeName">Name of the episode.</param>
-        /// <param name="listId">The list identifier.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// seriesName;Series Name cannot be null or empty
-        /// or
-        /// episodeName;Episode name cannot be null or empty
-        /// or
-        /// listId;ListID cannot be null or empty
-        /// </exception>
         public async Task<bool> AddEpisodeToListAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, string listId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrEmpty(seriesName))
@@ -827,7 +778,217 @@ namespace FollwItPortable
             return await PostEpisodeUncollectionInternalAsync(request, cancellationToken);
         }
 
-        #endregion
+        public async Task<bool> RemoveEpisodeFromListAsync(FollwItEpisode episode, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (episode == null)
+            {
+                throw new ArgumentNullException("episode", "Episode cannot be null");
+            }
+
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty");
+            }
+
+            var request = RequestManager.CreateRequestType<EpisodeListRequest>();
+            request.EpisodeId = episode.FollwitEpisodeId;
+            request.ListId = listId;
+
+            return await PostEpisodeUnlistInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> RemoveEpisodeFromListAsync(int id, ShowIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty");
+            }
+
+            var request = RequestManager.CreateRequestType<EpisodeListRequest>();
+            switch (identificationType)
+            {
+                case ShowIdentificationType.Imdb:
+                    throw new InvalidOperationException("Imdb is not a valid identification type for this method");
+                case ShowIdentificationType.FollwIt:
+                    request.EpisodeId = id;
+                    break;
+                case ShowIdentificationType.Tvdb:
+                    request.TvdbEpisodeId = id;
+                    break;
+            }
+
+            request.ListId = listId;
+
+            return await PostEpisodeUnlistInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> RemoveEpisodeFromListAsync(int tvdbId, int seasonNumber, int episodeNumber, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty");
+            }
+
+            var request = RequestManager.CreateRequestType<EpisodeListRequest>();
+            request.TvdbEpisodeId = tvdbId;
+            request.SeasonNumber = seasonNumber;
+            request.EpisodeNumber = episodeNumber;
+            request.ListId = listId;
+
+            return await PostEpisodeUnlistInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> RemoveEpisodeFromListAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, string listId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(seriesName))
+            {
+                throw new ArgumentNullException("seriesName", "Series Name cannot be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(episodeName))
+            {
+                throw new ArgumentNullException("episodeName", "Episode name cannot be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(listId))
+            {
+                throw new ArgumentNullException("listId", "ListID cannot be null or empty");
+            }
+
+            var request = RequestManager.CreateRequestType<EpisodeListRequest>();
+            request.SeriesName = seriesName;
+            request.EpisodeName = episodeName;
+            request.SeasonNumber = seasonNumber;
+            request.EpisodeNumber = episodeNumber;
+            request.ListId = listId;
+
+            return await PostEpisodeUnlistInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> MarkEpisodeAsWatchedAsync(FollwItEpisode episode, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (episode == null)
+            {
+                throw new ArgumentNullException("episode", "Episode cannot be null");
+            }
+
+            var request = RequestManager.CreateRequestType<EpisodeWatchedRequest>();
+            request.EpisodeId = episode.FollwitEpisodeId;
+
+            return await PostEpisodeWatchedInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> MarkEpisodeAsWatchedAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<EpisodeWatchedRequest>();
+            switch (identificationType)
+            {
+                case ShowIdentificationType.Imdb:
+                    throw new InvalidOperationException("Imdb is not a valid identification type for this method");
+                case ShowIdentificationType.FollwIt:
+                    request.EpisodeId = id;
+                    break;
+                case ShowIdentificationType.Tvdb:
+                    request.TvdbEpisodeId = id;
+                    break;
+            }
+
+            return await PostEpisodeWatchedInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> MarkEpisodeAsWatchedAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<EpisodeWatchedRequest>();
+            request.TvdbEpisodeId = tvdbId;
+            request.SeasonNumber = seasonNumber;
+            request.EpisodeNumber = episodeNumber;
+
+            return await PostEpisodeWatchedInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> MarkEpisodeAsWatchedAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(seriesName))
+            {
+                throw new ArgumentNullException("seriesName", "Series Name cannot be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(episodeName))
+            {
+                throw new ArgumentNullException("episodeName", "Episode name cannot be null or empty");
+            }
+
+            var request = RequestManager.CreateRequestType<EpisodeWatchedRequest>();
+            request.SeriesName = seriesName;
+            request.EpisodeName = episodeName;
+            request.SeasonNumber = seasonNumber;
+            request.EpisodeNumber = episodeNumber;
+
+            return await PostEpisodeWatchedInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> MarkEpisodeAsUnwatchedAsync(FollwItEpisode episode, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (episode == null)
+            {
+                throw new ArgumentNullException("episode", "Episode cannot be null");
+            }
+
+            var request = RequestManager.CreateRequestType<EpisodeBaseRequest>();
+            request.EpisodeId = episode.FollwitEpisodeId;
+
+            return await PostEpisodeUnwatchedInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> MarkEpisodeAsUnwatchedAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<EpisodeBaseRequest>();
+            switch (identificationType)
+            {
+                case ShowIdentificationType.Imdb:
+                    throw new InvalidOperationException("Imdb is not a valid identification type for this method");
+                case ShowIdentificationType.FollwIt:
+                    request.EpisodeId = id;
+                    break;
+                case ShowIdentificationType.Tvdb:
+                    request.TvdbEpisodeId = id;
+                    break;
+            }
+
+            return await PostEpisodeUnwatchedInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> MarkEpisodeAsUnwatchedAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<EpisodeBaseRequest>();
+            request.TvdbEpisodeId = tvdbId;
+            request.SeasonNumber = seasonNumber;
+            request.EpisodeNumber = episodeNumber;
+
+            return await PostEpisodeUnwatchedInternalAsync(request, cancellationToken);
+        }
+
+        public async Task<bool> MarkEpisodeAsUnwatchedAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(seriesName))
+            {
+                throw new ArgumentNullException("seriesName", "Series Name cannot be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(episodeName))
+            {
+                throw new ArgumentNullException("episodeName", "Episode name cannot be null or empty");
+            }
+
+            var request = RequestManager.CreateRequestType<EpisodeBaseRequest>();
+            request.SeriesName = seriesName;
+            request.EpisodeName = episodeName;
+            request.SeasonNumber = seasonNumber;
+            request.EpisodeNumber = episodeNumber;
+
+            return await PostEpisodeUnwatchedInternalAsync(request, cancellationToken);
+        }
+        //#endregion
 
         #region Web Requests
         private async Task<TReturnType> GetResponse<TReturnType>(string endPoint, string methodParams, CancellationToken cancellationToken = default(CancellationToken), [CallerMemberName] string callingMethod = "")
@@ -909,11 +1070,56 @@ namespace FollwItPortable
             return response.ToLower().Contains("success");
         }
 
+        private async Task<bool> PostEpisodeUnlistInternalAsync(EpisodeListRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var requestString = await request.SerialiseAsync();
+
+            var response = await PostResponse<string>(PostMethods.EpisodeUnlist, requestString, cancellationToken);
+
+            return response.ToLower().Contains("success");
+        }
+
         private async Task<bool> PostEpisodeRatingInternalAsync(EpisodeRatingRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
             var response = await PostResponse<string>(PostMethods.EpisodeRate, requestString, cancellationToken);
+
+            return response.ToLower().Contains("success");
+        }
+
+        private async Task<bool> PostEpisodeUnwatchedInternalAsync(EpisodeBaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var requestString = await request.SerialiseAsync();
+
+            var response = await PostResponse<string>(PostMethods.EpisodeUnwatched, requestString, cancellationToken);
+
+            return response.ToLower().Contains("success");
+        }
+
+        private async Task<bool> PostEpisodeWatchedInternalAsync(EpisodeWatchedRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var requestString = await request.SerialiseAsync();
+
+            var response = await PostResponse<string>(PostMethods.EpisodeWatched, requestString, cancellationToken);
+
+            return response.ToLower().Contains("success");
+        }
+
+        private async Task<bool> PostEpisodeUnwatchingInternalAsync(EpisodeBaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var requestString = await request.SerialiseAsync();
+
+            var response = await PostResponse<string>(PostMethods.EpisodeUnwatching, requestString, cancellationToken);
+
+            return response.ToLower().Contains("success");
+        }
+
+        private async Task<bool> PostEpisodeWatchingInternalAsync(EpisodeBaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var requestString = await request.SerialiseAsync();
+
+            var response = await PostResponse<string>(PostMethods.EpisodeWatching, requestString, cancellationToken);
 
             return response.ToLower().Contains("success");
         }
