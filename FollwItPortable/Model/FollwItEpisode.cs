@@ -44,5 +44,8 @@ namespace FollwItPortable.Model
 
         [JsonProperty("air_time")]
         public string AirTime { get; set; }
+
+        [JsonProperty("series")]
+        public FollwItTvShow Series { get; set; }
     }
 }

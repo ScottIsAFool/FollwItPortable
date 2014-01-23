@@ -2,7 +2,7 @@
 
 namespace FollwItPortable.Model.Requests
 {
-    internal class EpisodeCollectionRequest : BaseRequest
+    internal class EpisodeBaseRequest : BaseRequest
     {
         [JsonProperty("episode_id")]
         public int? EpisodeId { get; set; }
