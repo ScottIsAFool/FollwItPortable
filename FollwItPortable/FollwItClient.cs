@@ -480,7 +480,7 @@ namespace FollwItPortable
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
-        public async Task<bool> AddEpiosdeToCollectionAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> AddEpisodeToCollectionAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken))
         {
             var request = RequestManager.CreateRequestType<EpisodeBaseRequest>();
             switch (identificationType)
@@ -1158,7 +1158,7 @@ namespace FollwItPortable
         /// <summary>
         /// Marks the episode as watched.
         /// </summary>
-        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="tvdbId">The TVDB episode identifier.</param>
         /// <param name="seasonNumber">The season number.</param>
         /// <param name="episodeNumber">The episode number.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -1590,8 +1590,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieCollection, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieCollection, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -1666,8 +1666,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieList, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieList, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -1727,8 +1727,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieRate, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieRate, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -1806,8 +1806,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieUncollection, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieUncollection, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -1882,8 +1882,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieUnlist, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieUnlist, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -1940,8 +1940,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieUnwatched, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieUnwatched, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -1998,8 +1998,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieUnwatching, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieUnwatching, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -2056,8 +2056,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieWatching, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieWatching, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -2117,8 +2117,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.MovieWatched, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.MovieWatched, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -2242,8 +2242,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.ShowList, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.ShowList, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -2289,8 +2289,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.ShowRate, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.ShowRate, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -2372,8 +2372,8 @@ namespace FollwItPortable
                     break;
             }
 
-            var response = await PostResponse<string>(PostMethods.ShowUnlist, await request.SerialiseAsync(), cancellationToken);
-            return response.ToLower().Contains("success");
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.ShowUnlist, await request.SerialiseAsync(), cancellationToken);
+            return response.Response.Contains("success");
         }
 
         /// <summary>
@@ -2602,9 +2602,9 @@ namespace FollwItPortable
             request.Locale = locale;
             request.PrivateProfile = privateProfile;
 
-            var response = await PostResponse<string>(PostMethods.UserUpdate, await request.SerialiseAsync(), cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.UserUpdate, await request.SerialiseAsync(), cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         #endregion
@@ -2666,81 +2666,81 @@ namespace FollwItPortable
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeCollection, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeCollection, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         private async Task<bool> PostEpisodeUncollectionInternalAsync(EpisodeBaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeUncollection, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeUncollection, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         private async Task<bool> PostEpisodeListInternalAsync(EpisodeListRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeList, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeList, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         private async Task<bool> PostEpisodeUnlistInternalAsync(EpisodeListRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeUnlist, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeUnlist, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         private async Task<bool> PostEpisodeRatingInternalAsync(EpisodeRatingRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeRate, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeRate, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         private async Task<bool> PostEpisodeUnwatchedInternalAsync(EpisodeBaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeUnwatched, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeUnwatched, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         private async Task<bool> PostEpisodeWatchedInternalAsync(EpisodeWatchedRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeWatched, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeWatched, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         private async Task<bool> PostEpisodeUnwatchingInternalAsync(EpisodeBaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeUnwatching, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeUnwatching, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
 
         private async Task<bool> PostEpisodeWatchingInternalAsync(EpisodeBaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var requestString = await request.SerialiseAsync();
 
-            var response = await PostResponse<string>(PostMethods.EpisodeWatching, requestString, cancellationToken);
+            var response = await PostResponse<FollwItSuccessResponse>(PostMethods.EpisodeWatching, requestString, cancellationToken);
 
-            return response.ToLower().Contains("success");
+            return response.Response.Contains("success");
         }
         
         #endregion
