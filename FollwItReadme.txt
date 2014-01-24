@@ -1,0 +1,1 @@
+In order to use this library, you need to install the PclContrib.Platform nuget package. Without it, your project will error if you try and use the FollwItPortable client.
