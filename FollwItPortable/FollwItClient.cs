@@ -2163,7 +2163,7 @@ namespace FollwItPortable
         /// <returns></returns>
         public async Task<FollwItUserStats> GetUserStatsForMovieAsync(string id, MovieIdentificationType identificationType, string username = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var request = RequestManager.CreateRequestType<MovieUserStatsRequest>();
+            var request = RequestManager.CreateRequestType<QueryUsernameRequest>();
             request.QueryUsername = username;
             switch (identificationType)
             {
@@ -2430,6 +2430,8 @@ namespace FollwItPortable
         }
         #endregion
 
+        #region Post User Methods
+
         /// <summary>
         /// Creates the user.
         /// </summary>
@@ -2525,7 +2527,7 @@ namespace FollwItPortable
                 username = Username;
             }
 
-            var request = RequestManager.CreateRequestType<MovieUserStatsRequest>();
+            var request = RequestManager.CreateRequestType<QueryUsernameRequest>();
             request.QueryUsername = username;
 
             return await PostResponse<List<FollwItList>>(PostMethods.UserLists, await request.SerialiseAsync(), cancellationToken);
@@ -2560,11 +2562,52 @@ namespace FollwItPortable
                 username = Username;
             }
 
-            var request = RequestManager.CreateRequestType<MovieUserStatsRequest>();
+            var request = RequestManager.CreateRequestType<QueryUsernameRequest>();
             request.QueryUsername = username;
 
             return await PostResponse<FollwItFullProfile>(PostMethods.UserProfile, await request.SerialiseAsync(), cancellationToken);
         }
+
+        /// <summary>
+        /// Gets the user stream asynchronous.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<List<FollwItStreamItem>> GetUserStreamAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                username = Username;
+            }
+
+            var request = RequestManager.CreateRequestType<QueryUsernameRequest>();
+            request.QueryUsername = username;
+
+            return await PostResponse<List<FollwItStreamItem>>(PostMethods.UserStream, await request.SerialiseAsync(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates the user asynchronous.
+        /// </summary>
+        /// <param name="emailAddress">The email address.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="privateProfile">The private profile.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> UpdateUserAsync(string emailAddress = null, string locale = null, bool? privateProfile = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var request = RequestManager.CreateRequestType<CreateUserRequest>();
+            request.EmailAddress = emailAddress;
+            request.Locale = locale;
+            request.PrivateProfile = privateProfile;
+
+            var response = await PostResponse<string>(PostMethods.UserUpdate, await request.SerialiseAsync(), cancellationToken);
+
+            return response.ToLower().Contains("success");
+        }
+
+        #endregion
 
         #region Web Requests
         private async Task<TReturnType> GetResponse<TReturnType>(string endPoint, string methodParams, CancellationToken cancellationToken = default(CancellationToken), [CallerMemberName] string callingMethod = "")

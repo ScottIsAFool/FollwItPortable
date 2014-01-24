@@ -9,6 +9,6 @@ namespace FollwItPortable.Model.Requests
         [JsonProperty("locale")]
         public string Locale { get; set; }
         [JsonProperty("private_profile")]
-        public bool PrivateProfile { get; set; }
+        public bool? PrivateProfile { get; set; }
     }
 }

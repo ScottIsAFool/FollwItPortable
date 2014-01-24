@@ -2,7 +2,7 @@
 
 namespace FollwItPortable.Model.Requests
 {
-    internal class MovieUserStatsRequest : MovieBaseRequest
+    internal class QueryUsernameRequest : MovieBaseRequest
     {
         [JsonProperty("query_username")]
         public string QueryUsername { get; set; }
