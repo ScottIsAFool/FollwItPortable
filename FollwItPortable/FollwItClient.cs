@@ -15,10 +15,1071 @@ using FollwItPortable.Model.Responses;
 
 namespace FollwItPortable
 {
+    public interface IFollwItClient
+    {
+        /// <summary>
+        /// Gets the HTTP client.
+        /// </summary>
+        /// <value>
+        /// The HTTP client.
+        /// </value>
+        HttpClient HttpClient { get; }
+
+        /// <summary>
+        /// Gets the API key.
+        /// </summary>
+        /// <value>
+        /// The API key.
+        /// </value>
+        string ApiKey { get; }
+
+        /// <summary>
+        /// Gets or sets the username.
+        /// </summary>
+        /// <value>
+        /// The username.
+        /// </value>
+        string Username { get; set; }
+
+        /// <summary>
+        /// Sets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
+        string Password { set; }
+
+        /// <summary>
+        /// Authenticates the user.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>True if authenticated</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// username;Username cannot be null or empty
+        /// or
+        /// password;Password cannot be null or empty
+        /// </exception>
+        Task<bool> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the popular episodes.
+        /// </summary>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A list of episodes</returns>
+        Task<List<FollwItEpisode>> GetPopularEpisodesAsync(DateTime? startDate = null, DateTime? endDate = null, string locale = "en", CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the similar movies.
+        /// </summary>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="movieId">The movie identifier.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movieId;MovieID cannot be null or empty</exception>
+        Task<List<FollwItMovie>> GetSimilarMoviesAsync(MovieIdentificationType identificationType, string movieId, string locale = "en", CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the movie details.
+        /// </summary>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="movieId">The movie identifier.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movieId;MovieID cannot be null or empty</exception>
+        Task<FollwItMovie> GetMovieDetailsAsync(MovieIdentificationType identificationType, string movieId, string locale = "en", CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the trending movies.
+        /// </summary>
+        /// <param name="timeInterval">The time interval.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="limit">The limit.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">TimeInterval cannot be NewShow for Movies</exception>
+        Task<List<FollwItMovie>> GetTrendingMoviesAsync(TimeInterval timeInterval, string locale = "en", int limit = 20, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the show details.
+        /// </summary>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="showId">The show identifier.</param>
+        /// <param name="includeEpisodes">if set to <c>true</c> [include episodes].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">showId;ShowID cannot be null or empty</exception>
+        Task<FollwItTvShow> GetShowDetailsAsync(ShowIdentificationType identificationType, string showId, bool includeEpisodes = false, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the trending shows.
+        /// </summary>
+        /// <param name="timeInterval">The time interval.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="limit">The limit.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItTvShow>> GetTrendingShowsAsync(TimeInterval timeInterval, string locale = "en", int limit = 20, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the list.
+        /// </summary>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
+        Task<FollwItList> GetListAsync(string listId, string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the user lists.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItList>> GetUserListsAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the user movie collection.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItMovie>> GetUserMovieCollectionAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the user tv collection.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="includeEpisodes">if set to <c>true</c> [include episodes].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItTvShow>> GetUserTvCollectionAsync(string username = null, bool includeEpisodes = false, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the public profile.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<FollwItUser> GetPublicProfileAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the username available.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">username;Username cannot be null or empty</exception>
+        Task<bool> GetUsernameAvailableAsync(string username, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the user callendar follwing.
+        /// </summary>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A list of episodes</returns>
+        Task<List<FollwItEpisode>> GetUserCallendarFollwingAsync(DateTime? startDate = null, DateTime? endDate = null, string locale = "en", CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Bulks the change episodes.
+        /// </summary>
+        /// <param name="episodes">The episodes.</param>
+        /// <param name="inCollection">The in collection.</param>
+        /// <param name="watched">The watched.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<BulkEpisodeResponse>> BulkChangeEpisodesAsync(List<FollwItEpisode> episodes, bool? inCollection = null, bool? watched = null, int? rating = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the episode to collection.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">episode;Episode cannot be null</exception>
+        Task<bool> AddEpisodeToCollectionAsync(FollwItEpisode episode, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the epiosde to collection.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> AddEpisodeToCollectionAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the episode to collection.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> AddEpisodeToCollectionAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the episode to collection.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// </exception>
+        Task<bool> AddEpisodeToCollectionAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the episode to list.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// episode;Episode cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty
+        /// </exception>
+        Task<bool> AddEpisodeToListAsync(FollwItEpisode episode, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the epiosde to list.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> AddEpiosdeToListAsync(int id, ShowIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the episode to list.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
+        Task<bool> AddEpisodeToListAsync(int tvdbId, int seasonNumber, int episodeNumber, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the episode to list.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// or
+        /// listId;ListID cannot be null or empty
+        /// </exception>
+        Task<bool> AddEpisodeToListAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Changes the episode rating.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">episode;Episode cannot be null</exception>
+        Task<bool> ChangeEpisodeRatingAsync(FollwItEpisode episode, int rating, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Changes the episode rating.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> ChangeEpisodeRatingAsync(int id, ShowIdentificationType identificationType, int rating, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Changes the episode rating.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> ChangeEpisodeRatingAsync(int tvdbId, int seasonNumber, int episodeNumber, int rating, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Changes the episode rating.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// </exception>
+        Task<bool> ChangeEpisodeRatingAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, int rating, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the episode details.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<FollwItEpisode> GetEpisodeDetailsAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the episode details.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<FollwItEpisode> GetEpisodeDetailsAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the episode details.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// </exception>
+        Task<FollwItEpisode> GetEpisodeDetailsAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the episode from collection.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">episode;Episode cannot be null</exception>
+        Task<bool> RemoveEpisodeFromCollectionAsync(FollwItEpisode episode, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the episode from collection.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> RemoveEpisodeFromCollectionAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the episode from collection.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> RemoveEpisodeFromCollectionAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the episode from collection.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// </exception>
+        Task<bool> RemoveEpisodeFromCollectionAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the episode from list.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// episode;Episode cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty
+        /// </exception>
+        Task<bool> RemoveEpisodeFromListAsync(FollwItEpisode episode, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the episode from list.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> RemoveEpisodeFromListAsync(int id, ShowIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the episode from list.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
+        Task<bool> RemoveEpisodeFromListAsync(int tvdbId, int seasonNumber, int episodeNumber, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the episode from list.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// or
+        /// listId;ListID cannot be null or empty
+        /// </exception>
+        Task<bool> RemoveEpisodeFromListAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as watched.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">episode;Episode cannot be null</exception>
+        Task<bool> MarkEpisodeAsWatchedAsync(FollwItEpisode episode, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as watched.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> MarkEpisodeAsWatchedAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as watched.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB episode identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> MarkEpisodeAsWatchedAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as watched.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// </exception>
+        Task<bool> MarkEpisodeAsWatchedAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as unwatched.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">episode;Episode cannot be null</exception>
+        Task<bool> MarkEpisodeAsUnwatchedAsync(FollwItEpisode episode, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as unwatched.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> MarkEpisodeAsUnwatchedAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as unwatched.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> MarkEpisodeAsUnwatchedAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as unwatched.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// </exception>
+        Task<bool> MarkEpisodeAsUnwatchedAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as watching.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">episode;Episode cannot be null</exception>
+        Task<bool> MarkEpisodeAsWatchingAsync(FollwItEpisode episode, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as watching.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> MarkEpisodeAsWatchingAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as watching.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> MarkEpisodeAsWatchingAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as watching.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// </exception>
+        Task<bool> MarkEpisodeAsWatchingAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as not watching.
+        /// </summary>
+        /// <param name="episode">The episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">episode;Episode cannot be null</exception>
+        Task<bool> MarkEpisodeAsNotWatchingAsync(FollwItEpisode episode, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as not watching.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a valid identification type for this method</exception>
+        Task<bool> MarkEpisodeAsNotWatchingAsync(int id, ShowIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as not watching.
+        /// </summary>
+        /// <param name="tvdbId">The TVDB identifier.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> MarkEpisodeAsNotWatchingAsync(int tvdbId, int seasonNumber, int episodeNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the episode as not watching.
+        /// </summary>
+        /// <param name="seriesName">Name of the series.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeNumber">The episode number.</param>
+        /// <param name="episodeName">Name of the episode.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// seriesName;Series Name cannot be null or empty
+        /// or
+        /// episodeName;Episode name cannot be null or empty
+        /// </exception>
+        Task<bool> MarkEpisodeAsNotWatchingAsync(string seriesName, int seasonNumber, int episodeNumber, string episodeName, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Bulks the change movies.
+        /// </summary>
+        /// <param name="movies">The movies.</param>
+        /// <param name="inCollection">The in collection.</param>
+        /// <param name="watched">The watched.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<BulkMovieResponse>> BulkChangeMoviesAsync(List<FollwItMovie> movies, bool? inCollection = null, bool? watched = null, int? rating = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the movie to collection.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> AddMovieToCollectionAsync(FollwItMovie movie, bool insertInStream = true, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the movie to collection.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> AddMovieToCollectionAsync(string id, MovieIdentificationType identificationType, bool insertInStream = true, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the movie to list.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// movie;Movie cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty.
+        /// </exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> AddMovieToListAsync(FollwItMovie movie, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the movie to list.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty.</exception>
+        Task<bool> AddMovieToListAsync(string id, MovieIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Changes the movie rating.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> ChangeMovieRatingAsync(FollwItMovie movie, int rating, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Changes the movie rating.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> ChangeMovieRatingAsync(string id, MovieIdentificationType identificationType, int rating, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the recommended movies.
+        /// </summary>
+        /// <param name="genres">The genres.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItMovie>> GetRecommendedMoviesAsync(List<FollwItGenre> genres, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the movie from collection.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> RemoveMovieFromCollectionAsync(FollwItMovie movie, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the movie from collection.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> RemoveMovieFromCollectionAsync(string id, MovieIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the movie from list.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// movie;Movie cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty.
+        /// </exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> RemoveMovieFromListAsync(FollwItMovie movie, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the movie from list.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty.</exception>
+        Task<bool> RemoveMovieFromListAsync(string id, MovieIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the movie as unwatched.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> MarkMovieAsUnwatchedAsync(FollwItMovie movie, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the movie as unwatched.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> MarkMovieAsUnwatchedAsync(string id, MovieIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the movie as not watching.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> MarkMovieAsNotWatchingAsync(FollwItMovie movie, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the movie as not watching.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> MarkMovieAsNotWatchingAsync(string id, MovieIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the movie as watching.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> MarkMovieAsWatchingAsync(FollwItMovie movie, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the movie as watching.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> MarkMovieAsWatchingAsync(string id, MovieIdentificationType identificationType, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the movie as watched.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<bool> MarkMovieAsWatchedAsync(FollwItMovie movie, bool insertInStream = true, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Marks the movie as watched.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="insertInStream">if set to <c>true</c> [insert in stream].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> MarkMovieAsWatchedAsync(string id, MovieIdentificationType identificationType, bool insertInStream = true, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the user stats for movie.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">movie;Movie cannot be null</exception>
+        /// <exception cref="System.InvalidOperationException">Movie didn't contain a valid ID</exception>
+        Task<FollwItUserStats> GetUserStatsForMovieAsync(FollwItMovie movie, string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the user stats for movie.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<FollwItUserStats> GetUserStatsForMovieAsync(string id, MovieIdentificationType identificationType, string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the show to list.
+        /// </summary>
+        /// <param name="show">The show.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// show;Show cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty.
+        /// </exception>
+        Task<bool> AddShowToListAsync(FollwItTvShow show, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Adds the show to list.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a supported type for this method</exception>
+        Task<bool> AddShowToListAsync(int id, ShowIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Changes the show rating.
+        /// </summary>
+        /// <param name="show">The show.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">show;Show cannot be null</exception>
+        Task<bool> ChangeShowRatingAsync(FollwItTvShow show, int rating, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Changes the show rating.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="rating">The rating.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a supported type for this method</exception>
+        Task<bool> ChangeShowRatingAsync(int id, ShowIdentificationType identificationType, int rating, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the recommended shows.
+        /// </summary>
+        /// <param name="genres">The genres.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItTvShow>> GetRecommendedShowsAsync(List<FollwItGenre> genres, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the show from list.
+        /// </summary>
+        /// <param name="show">The show.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// show;Show cannot be null
+        /// or
+        /// listId;ListID cannot be null or empty.
+        /// </exception>
+        Task<bool> RemoveShowFromListAsync(FollwItTvShow show, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Removes the show from list.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a supported type for this method</exception>
+        Task<bool> RemoveShowFromListAsync(int id, ShowIdentificationType identificationType, string listId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the tv stats for user.
+        /// </summary>
+        /// <param name="show">The show.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="includeEpisodes">if set to <c>true</c> [include episodes].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">show;Show cannot be null</exception>
+        Task<FollwItTvUserStats> GetTvStatsForUserAsync(FollwItTvShow show, string username = null, bool includeEpisodes = false, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the tv stats for user.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="identificationType">Type of the identification.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="includeEpisodes">if set to <c>true</c> [include episodes].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Imdb is not a supported type for this method</exception>
+        Task<FollwItTvUserStats> GetTvStatsForUserAsync(int id, ShowIdentificationType identificationType, string username = null, bool includeEpisodes = false, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Creates the user.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="emailAddress">The email address.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="privateProfile">if set to <c>true</c> [private profile].</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// True if the user was created successfully
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">username;Username cannot be null or empty
+        /// or
+        /// password;Password cannot be null or empty
+        /// or
+        /// emailAddress;Email address cannot be null or empty</exception>
+        Task<bool> CreateUserAsync(string username, string password, string emailAddress, string locale = "en", bool privateProfile = false, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the user list.
+        /// </summary>
+        /// <param name="listId">The list identifier.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">listId;ListID cannot be null or empty</exception>
+        Task<FollwItList> GetUserListAsync(string listId, string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the users lists.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItList>> GetUsersListsAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the online changes.
+        /// </summary>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItOnlineChange>> GetOnlineChangesAsync(DateTime startDate, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the full profile.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<FollwItFullProfile> GetFullProfileAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the user stream asynchronous.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<List<FollwItStreamItem>> GetUserStreamAsync(string username = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Updates the user asynchronous.
+        /// </summary>
+        /// <param name="emailAddress">The email address.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="privateProfile">The private profile.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> UpdateUserAsync(string emailAddress = null, string locale = null, bool? privateProfile = null, CancellationToken cancellationToken = default(CancellationToken));
+    }
+
     /// <summary>
     /// 
     /// </summary>
-    public class FollwItClient
+    public class FollwItClient : IFollwItClient
     {
         private const string BaseUrlFormat = "http://follw.it/api/3/{0}/{1}/{2}";
         internal const string DateFormat = "YYYY-mm-dd";
