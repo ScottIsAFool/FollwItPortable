@@ -17,7 +17,7 @@
     </metadata>
     <files>
         <file src="Nuget\FollwItPortable.dll" target="lib\portable-net403+sl50+wp80+win\FollwItPortable.dll" />
-        <file src="Nuget\FollwItPortable.dll" target="lib\portable-net403+sl50+wp80+win\Portable.Runtime.dll" />
-        <file src="Nuget\FollwItPortable.dll" target="lib\portable-net403+sl50+wp80+win\Portable.Security.Cryptography.dll" />
+        <file src="Nuget\Portable.Runtime.dll" target="lib\portable-net403+sl50+wp80+win\Portable.Runtime.dll" />
+        <file src="Nuget\Portable.Security.Cryptography.dll" target="lib\portable-net403+sl50+wp80+win\Portable.Security.Cryptography.dll" />
     </files>
 </package>
