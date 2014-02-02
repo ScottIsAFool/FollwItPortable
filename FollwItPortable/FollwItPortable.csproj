@@ -53,7 +53,9 @@
     <Compile Include="FollwItClient.cs" />
     <Compile Include="Model\ChangeType.cs" />
     <Compile Include="Model\CreateUserResponse.cs" />
+    <Compile Include="Model\ErrorResponse.cs" />
     <Compile Include="Model\FollwItEpisodeSummary.cs" />
+    <Compile Include="Model\FollwItException.cs" />
     <Compile Include="Model\FollwItFullProfile.cs" />
     <Compile Include="Model\FollwItGenre.cs" />
     <Compile Include="GetMethods.cs" />

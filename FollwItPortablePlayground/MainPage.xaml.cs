@@ -28,7 +28,8 @@ namespace FollwItPortablePlayground
         private async void OtherButton_OnClick(object sender, RoutedEventArgs e)
         {
             //var response = await _client.GetUserStreamAsync();
-            var response = await _client.MarkEpisodeAsWatchedAsync(4325893, 1, 1);
+            //var response = await _client.MarkEpisodeAsWatchedAsync(4325893, 1, 1);
+            var responset = await _client.GetPublicProfileAsync("dademon");
         }
     }
 }

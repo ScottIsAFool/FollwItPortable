@@ -12,6 +12,7 @@ using FollwItPortable.Logging;
 using FollwItPortable.Model;
 using FollwItPortable.Model.Requests;
 using FollwItPortable.Model.Responses;
+using Newtonsoft.Json;
 
 namespace FollwItPortable
 {
@@ -3687,6 +3688,12 @@ namespace FollwItPortable
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
+
+            if (responseString.Contains("\"response\":\"error\""))
+            {
+                var error = JsonConvert.DeserializeObject<ErrorResponse>(responseString);
+                throw new FollwItException(error.Message, error.Response);
+            }
 
             var item = await responseString.DeserialiseAsync<TReturnType>();
 
