@@ -14,7 +14,8 @@ namespace FollwItPortable.Model
 
         [JsonProperty("avatar")]
         public string Avatar { get; set; }
+        
         [JsonProperty("private_profile")]
-        public bool IsPublic { get; set; }
+        public bool IsPrivate { get; set; }
     }
 }
