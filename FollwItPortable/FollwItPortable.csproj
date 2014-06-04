@@ -82,6 +82,7 @@
     <Compile Include="Model\FollwItUsernameAvailable.cs" />
     <Compile Include="Model\FollwItUserStats.cs" />
     <Compile Include="Model\FollwItWriter.cs" />
+    <Compile Include="Model\ObjectStatus.cs" />
     <Compile Include="Model\Requests\AuthenticationRequest.cs" />
     <Compile Include="Model\Requests\BaseRequest.cs" />
     <Compile Include="Model\Requests\BulkEpisodeChangeRequest.cs" />
