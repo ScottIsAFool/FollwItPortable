@@ -124,5 +124,7 @@ namespace FollwItPortable.Model
 
         [JsonProperty("client_id")]
         public int ClientId { get; set; }
+
+        public ObjectStatus Status { get; set; }
     }
 }
